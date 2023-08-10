@@ -7,7 +7,7 @@ class App extends Component {
     super();
 
     this.state = {
-      // THe spaces on the board and the number of times they've been landed on
+      // The spaces on the board and the number of times they've been landed on
       board: 
       [
         { name:'Go', tally: 0 },
@@ -50,14 +50,30 @@ class App extends Component {
         { name: 'Park Place', tally: 0 },
         { name: 'Luxury Tax', tally: 0 },
         { name: 'Boardwalk', tally: 0 },
-      ]
+      ],
+      roll: 
+      {
+        dice1: Math.floor(Math.random() * 6) + 1,
+        dice2: Math.floor(Math.random() * 6) + 1,
+        doubles: (dice1, dice2) => { return dice1 === dice2 },
+        sum: (dice1, dice2) => 
+        { 
+          // (startingSpaceIndex + rollValue) % this.state.board.length
+          return dice1 + dice2 
+        }
+      },
     }
   }
     
   render(){
+    let index = 0;
+    index = (index + this.state.roll.sum(this.state.roll.dice1, this.state.roll.dice2)) % this.state.board.length
+    const token = this.state.board[index];
+
     return (
       <div className="App">
         <h1>Monopoly Stats</h1>
+        <h2>Stretegy A</h2>
           <table>
               <tr>
                 <th></th>
@@ -84,12 +100,17 @@ class App extends Component {
                 <tr>
                   <td>{ space.name }</td>
                   <td>{ space.tally }</td>
-                  <td>{ space.tally/1000 }</td>
+                  <td>{ (space.tally / 1000).toFixed(2) }</td>
                 </tr>
               );  
             })
           }
           </table>
+          <p>{ this.state.roll.dice1 }</p>
+          <p>{ this.state.roll.dice2 }</p>
+          <p>{ this.state.roll.doubles(this.state.roll.dice1, this.state.roll.dice2) ? "Doubles" : "Not Doubles" }</p>
+          <p>{ this.state.roll.sum(this.state.roll.dice1, this.state.roll.dice2) }</p>
+          <p>{ token.name } - { token.tally += 1 }</p>
       </div>
     );
   };
