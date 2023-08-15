@@ -4,7 +4,6 @@ const roll = {
     doubles: (dice1, dice2) => { return dice1 === dice2 },
     sum: (dice1, dice2) => 
     { 
-      // (startingSpaceIndex + rollValue) % this.state.board.length
       return dice1 + dice2 
     }
   }
